@@ -43,14 +43,14 @@ if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins'
          */
         function ehive_search_admin_options_init(){
         	 
-        	wp_register_style($handle = 'eHiveAdminCSS', $src = plugins_url('eHiveAdmin.css', '/eHiveAccess/css/eHiveAdmin.css'));
+        	wp_register_style($handle = 'eHiveAdminCSS', $src = plugins_url('eHiveAdmin.css', '/ehive-access/css/eHiveAdmin.css'));
         	
         	wp_enqueue_script( 'jquery' );
         	
         	wp_enqueue_style( 'farbtastic' );
         	wp_enqueue_script( 'farbtastic' );
         	
-        	wp_register_script($handle = 'eHiveSearchOptions', $src = plugins_url('options.js', '/eHiveSearch/js/options.js'), $deps = array('jquery'), $ver = '1.0.0', false);
+        	wp_register_script($handle = 'eHiveSearchOptions', $src = plugins_url('options.js', '/ehive-search/js/options.js'), $deps = array('jquery'), $ver = '1.0.0', false);
         	wp_enqueue_script( 'eHiveSearchOptions' );
         	 
         	register_setting('ehive_search_options', 'ehive_search_options', array(&$this, 'ehive_search_options_validate') );
@@ -194,7 +194,7 @@ if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins'
         	$options = get_option('ehive_search_options');
         	$listViewEnabled = false;
         	if(isset($options['results_view_list_enabled']) && $options['results_view_list_enabled'] == 'on') {
-        		echo "<div class='ehive-options-demo-image list-view'><img src='/wp-content/plugins/eHiveSearch/images/search_item_list.png' /></div>";
+        		echo "<div class='ehive-options-demo-image list-view'><img src='/wp-content/plugins/ehive-search/images/search_item_list.png' /></div>";
         		$listViewEnabled = true;
         	}
         	
@@ -202,7 +202,7 @@ if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins'
         		if ($listViewEnabled) {
         			$bothEnabledCssClass = 'both-ehive-views-enabled';
         		}
-        		echo "<div class='ehive-options-demo-image lightbox-view $bothEnabledCssClass'><img src='/wp-content/plugins/eHiveSearch/images/search_item_lightbox.png' /></div>";
+        		echo "<div class='ehive-options-demo-image lightbox-view $bothEnabledCssClass'><img src='/wp-content/plugins/ehive-search/images/search_item_lightbox.png' /></div>";
         	}
         }
         
@@ -429,7 +429,7 @@ if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins'
         	$options = get_option('ehive_search_options');
         
         	if ($options[plugin_css_enabled] == 'on') {
-        		wp_register_style($handle = 'eHiveSearchCSS', $src = plugins_url('eHiveSearch.css', '/eHiveSearch/css/eHiveSearch.css'), $deps = array(), $ver = '0.0.1', $media = 'all');
+        		wp_register_style($handle = 'eHiveSearchCSS', $src = plugins_url('eHiveSearch.css', '/ehive-search/css/eHiveSearch.css'), $deps = array(), $ver = '0.0.1', $media = 'all');
         		wp_enqueue_style( 'eHiveSearchCSS');
         	}
         }
@@ -699,7 +699,7 @@ if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins'
     add_filter('query_vars', array(&$eHiveSearch, 'query_vars'));
     add_filter('rewrite_rules_array', array(&$eHiveSearch, 'add_rewrite_rules'));
     
-    add_action('activate_eHiveSearch/EHiveSearch.php', array(&$eHiveSearch, 'activate'));
-    add_action('deactivate_eHiveSearch/EHiveSearch.php', array(&$eHiveSearch, 'deactivate'));
+    add_action('activate_ehive-search/EHiveSearch.php', array(&$eHiveSearch, 'activate'));
+    add_action('deactivate_ehive-search/EHiveSearch.php', array(&$eHiveSearch, 'deactivate'));
 }
 ?>
