@@ -121,7 +121,7 @@ if (!isset($eHiveApiErrorMessage)) {
 							echo '<div class="ehive-item-image-wrap">';
 								echo '<a class="ehive-image-link" href="'.$eHiveAccess->getObjectDetailsPageLink($objectRecord->objectRecordId).'">';
 								
-									$imageLink = '<img class="ehive-image" src="/wp-content/plugins/eHiveSearch/images/no_image_ts.png" alt="'.$objectRecord->name.'" title="'.$objectRecord->name.'" >';
+									$imageLink = '<img class="ehive-image" src="/wp-content/plugins/ehive-search/images/no_image_ts.png" alt="'.$objectRecord->name.'" title="'.$objectRecord->name.'" >';
 									
 									$imageMediaSet = $objectRecord->getMediaSetByIdentifier('image');
 									if (isset($imageMediaSet)) {
@@ -146,7 +146,7 @@ if (!isset($eHiveApiErrorMessage)) {
 				echo '</div>';
 			
 			if ( $poweredByEhiveEnabled ) {
-				echo '<a href="http://ehive.com/what-is-ehive" target="_blank"><img class="ehive-logo-powered-by" src="/wp-content/plugins/eHiveSearch/images/powered_by_ehive_small.png" alt="Powered by eHive" title="Powered by eHive" width="103" height="35"></a>';
+				echo '<a href="http://ehive.com/what-is-ehive" target="_blank"><img class="ehive-logo-powered-by" src="/wp-content/plugins/ehive-search/images/powered_by_ehive_small.png" alt="Powered by eHive" title="Powered by eHive" width="103" height="35"></a>';
 			}
 			echo '</div>';
 								
@@ -271,25 +271,25 @@ function listMetadata($options, $objectRecord, $eHiveAccess, $eHiveApi) {
 	if ( $showCatalogueTypeIcon ) {
 		switch ($objectRecord->catalogueType) {
 			case 'archaeology':
-				echo '<img class="ehive-catalogue-type ehive-archaeology" src="/wp-content/plugins/eHiveSearch/images/catalogue_archaeology.png" width="21" height="21" alt="Archaeology" title="Archaeology"/>';
+				echo '<img class="ehive-catalogue-type ehive-archaeology" src="/wp-content/plugins/ehive-search/images/catalogue_archaeology.png" width="21" height="21" alt="Archaeology" title="Archaeology"/>';
 				break;
 			case 'archives':
-				echo '<img class="ehive-catalogue-type ehive-archives" src="/wp-content/plugins/eHiveSearch/images/catalogue_archives.png" width="21" height="21" alt="Archives" title="Archives"/>';
+				echo '<img class="ehive-catalogue-type ehive-archives" src="/wp-content/plugins/ehive-search/images/catalogue_archives.png" width="21" height="21" alt="Archives" title="Archives"/>';
 				break;
 			case 'art':
-				echo '<img class="ehive-catalogue-type ehive-art" src="/wp-content/plugins/eHiveSearch/images/catalogue_art.png" width="21" height="21" alt="Art" title="Art"/>';
+				echo '<img class="ehive-catalogue-type ehive-art" src="/wp-content/plugins/ehive-search/images/catalogue_art.png" width="21" height="21" alt="Art" title="Art"/>';
 				break;
 			case 'history':
-				echo '<img class="ehive-catalogue-type ehive-history" src="/wp-content/plugins/eHiveSearch/images/catalogue_history.png" width="21" height="21" alt="History" title="History"/>';
+				echo '<img class="ehive-catalogue-type ehive-history" src="/wp-content/plugins/ehive-search/images/catalogue_history.png" width="21" height="21" alt="History" title="History"/>';
 				break;
 			case 'library':
-				echo '<img class="ehive-catalogue-type ehive-library" src="/wp-content/plugins/eHiveSearch/images/catalogue_library.png" width="21" height="21" alt="Library" title="Library"/>';
+				echo '<img class="ehive-catalogue-type ehive-library" src="/wp-content/plugins/ehive-search/images/catalogue_library.png" width="21" height="21" alt="Library" title="Library"/>';
 				break;
 			case 'natural_science':
-				echo '<img class="ehive-catalogue-type ehive-natural-science" src="/wp-content/plugins/eHiveSearch/images/catalogue_natural_science.png" width="21" height="21" alt="Natural Science" title="Natural Science"/>';
+				echo '<img class="ehive-catalogue-type ehive-natural-science" src="/wp-content/plugins/ehive-search/images/catalogue_natural_science.png" width="21" height="21" alt="Natural Science" title="Natural Science"/>';
 				break;
 			case 'photography':
-				echo '<img class="ehive-catalogue-type ehive-photography" src="/wp-content/plugins/eHiveSearch/images/catalogue_photography.png" width="21" height="21" alt="Photography" title="Photography"/>';
+				echo '<img class="ehive-catalogue-type ehive-photography" src="/wp-content/plugins/ehive-search/images/catalogue_photography.png" width="21" height="21" alt="Photography" title="Photography"/>';
 				break;
 		}
 	}
