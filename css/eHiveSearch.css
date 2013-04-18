@@ -1,0 +1,135 @@
+/*
+	Copyright (C) 2012 Vernon Systems Limited
+
+	This program is free software; you can redistribute it and/or
+	modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2
+	of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*/
+/*
+	Search results navigation.
+*/
+div.ehive-search-results {
+	float: left;
+	width: 100%;
+}
+
+div.ehive-search div.ehive-pagination {
+	float: left;
+}
+div.ehive-search ul.ehive-view-navigation {
+	float: right;
+	width: auto;
+	list-style-type: none;
+}
+div.ehive-search ul.ehive-view-navigation li {
+	display: inline;
+}
+
+
+div.ehive-search div.ehive-list {
+	position:relative;
+}
+
+div.ehive-search div.ehive-item {
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	margin-bottom:1%;
+	position: relative;
+}
+
+div.ehive-search div.ehive-view,
+div.ehive-search div.ehive-list div.ehive-item {	
+	max-width:100%;
+	width:100%;
+	float:left;
+}
+
+div.ehive-search div.ehive-lightbox div.ehive-item {	
+	/* min-width:200px; */
+	max-width:30%;
+	width:30%;
+	margin-right: 3%;
+	display:inline-block;
+	vertical-align:top;
+	*display: inline;
+	box-sizing: border-box;
+	zoom: 1;
+	padding: 0.70%;
+}
+
+div.ehive-search div.ehive-lightbox div.ehive-item div.ehive-item-image-wrap {
+	width:auto;
+	padding-bottom: 3%;
+}
+
+div.ehive-search div.ehive-lightbox div.ehive-item div.ehive-item-image-wrap img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+div.ehive-search div.ehive-view.ehive-list div.ehive-item div {
+	height:auto;
+	width:auto;
+	float:left;
+	padding: 6px 6px 0 6px;
+}
+
+div.ehive-search div.ehive-item-image-wrap,
+div.ehive-search div.ehive-item-metadata-wrap {
+	margin: 5px;
+}
+
+div.ehive-search div.ehive-view.ehive-list div.ehive-item div.ehive-item-metadata-wrap {
+	max-width:76%;
+	width: 76%;
+}
+
+div.ehive-search div.ehive-view.ehive-list div.ehive-item div.ehive-item-metadata-wrap p {
+	margin:0;
+	padding:0;
+}
+
+div.ehive-search div.ehive-item-metadata-wrap {
+	max-width:100%;
+	width:auto;
+}
+
+div.ehive-search div.ehive-item-metadata-wrap span.ehive-field-label {
+	font-weight:bold;
+}
+
+div.ehive-search img.ehive-catalogue-type {
+	position: absolute;
+	top:12%;
+	right:2%;
+	z-index:3;
+	box-shadow:none;
+}
+
+div.ehive-search a.ehive-more-link {
+	float: right;
+	font-style: italic;
+	font-size: smaller;
+	padding: 6px;
+}
+
+/*
+	Powered by logo.
+*/
+div.ehive-search img.ehive-logo-powered-by {
+	float: right;
+	padding: 20px 0 30px 0;
+	box-shadow:none;
+}
