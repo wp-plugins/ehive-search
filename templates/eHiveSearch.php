@@ -264,7 +264,7 @@ function listMetadata($options, $objectRecord, $eHiveAccess, $eHiveApi) {
 	if ( $showPublicProfileName ) {
 		echo '<p class="ehive-field ehive-identifier-public_profile_name">';
 		echo '<span class="ehive-field-label">From: </span>';
-		echo '<a href="'.$eHiveAccess->getAccountDetailsPageLink($objectRecord->accountId).'">'.$eHiveApi->getAccount($objectRecord->accountId)->publicProfileName.'</a>';
+		echo '<a href="'.$eHiveAccess->getAccountDetailsPageLink($objectRecord->account->accountId).'">'.$objectRecord->account->publicProfileName.'</a>';
 		echo '</p>';
 	}
 

@@ -4,7 +4,7 @@ Donate link:http://ehive.com/what_is_ehive
 Tags: ehive, collection, museum, archive, history
 Requires at least: 3.3.1
 Tested up to: 3.5.1
-Stable tag: 2.1.1
+Stable tag: 2.1.2
 License: GPL2+
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,10 +85,16 @@ There are three ways to install a plugin:
 4. Click the "Activate plugin" link below the plugin's name
 
 == Changelog ==
+= 2.1.2 =
+* Added option to search the private index for a Site type configured as Account.
+
 = 2.1.1 =
 * First stable release of the eHive Access plugin. 
 
 == Upgrade Notice ==
+= 2.1.2 =
+* Added option to search the private index for a Site type configured as Account.
+
 = 2.1.1 =
 This is the first stable release of the eHive Access plugin.
 

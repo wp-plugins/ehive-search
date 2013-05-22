@@ -535,6 +535,7 @@ if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins'
 	           		$siteType = $eHiveAccess->getSiteType();
 	            	$accountId = $eHiveAccess->getAccountId();
 	            	$communityId = $eHiveAccess->getCommunityId();
+	            	$searchPrivateRecords = $eHiveAccess->getSearchPrivateRecords();
 	            	
 	            	$eHiveApi = $eHiveAccess->eHiveApi();
 	
@@ -543,12 +544,15 @@ if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins'
 	            	$direction = null;
 	            	
 					switch($siteType){
-					case 'Account':
-						$objectRecordsCollection = $eHiveApi->getObjectRecordsInAccount( $accountId, $query, $hasImages, $sort, $direction, $offset, $options['limit'] );						
+					case 'Account':						
+						if ($searchPrivateRecords) {
+							$objectRecordsCollection = $eHiveApi->getObjectRecordsInAccount( $accountId, $query, $hasImages, $sort, $direction, $offset, $options['limit'], 'any' );
+						} else {
+							$objectRecordsCollection = $eHiveApi->getObjectRecordsInAccount( $accountId, $query, $hasImages, $sort, $direction, $offset, $options['limit'], 'public' );
+						}						
 						break;
-					case 'Community':
-						print_r($query);
-						
+
+					case 'Community':						
 						if ($a) {
 							$objectRecordsCollection = $eHiveApi->getObjectRecordsInAccountInCommunity($communityId, $a, $query, $hasImages, $sort, $direction, $offset, $options['limit'] );
 						} else {
