@@ -4,7 +4,7 @@ Donate link:http://ehive.com/what_is_ehive
 Tags: ehive, collection, museum, archive, history
 Requires at least: 3.3.1
 Tested up to: 3.5.1
-Stable tag: 2.1.3
+Stable tag: 2.1.4
 License: GPL2+
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,6 +85,11 @@ There are three ways to install a plugin:
 4. Click the "Activate plugin" link below the plugin's name
 
 == Changelog ==
+= 2.1.4 =
+* Bug fix, query string in search request encoded correctly for searches containing spaces and quotes.
+* Added version control for plugin options. Defaulting of new options without changing existing options is now possible.
+* Added uninstall script to remove options from the database when the plugin is deleted.  
+
 = 2.1.3 =
 * Forcing update of version number.
 
@@ -95,6 +100,11 @@ There are three ways to install a plugin:
 * First stable release of the eHive Access plugin. 
 
 == Upgrade Notice ==
+= 2.1.4 =
+* Bug fix, query string in search request encoded correctly for searches containing spaces and quotes.
+* Added version control for plugin options. Defaulting of new options without changing existing options is now possible. 
+* Added uninstall script to remove options from the database when the plugin is deleted. 
+
 = 2.1.3 =
 * Forcing update of version number.
 

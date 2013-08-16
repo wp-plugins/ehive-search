@@ -24,7 +24,10 @@ if ($css_class == "") {
 
 if ($options['hide_search_form_enabled'] != 'on') {
 	echo '<form class="ehive-search" name="ehive-search-form" action="'. $eHiveAccess->getSearchPageLink() .'" method="get">';
-		echo '<input class="ehive-query" type="text" name="'. $options['query_var'] .'" value="'. ehive_get_var($options['query_var']).'"/>';
+		
+		//echo '<input class="ehive-query" type="text" name="'. $options['query_var'] .'" value="'. stripslashes_deep(ehive_get_var($options['query_var'])).'"/>';		
+		echo "<input class='ehive-query' type='text' name='". $options['query_var'] ."' value='".$query."'/>";
+		
 		echo '<input class="ehive-submit" type="submit" value="Search"/>';
 	echo '</form>';
 }
@@ -50,10 +53,13 @@ if (!isset($eHiveApiErrorMessage)) {
 						} else {		
 							$all = ($queryAll==true) ? '&all=true' : '';
 									
-							$pBase = ehive_link2('Search') . '?' . $options['query_var'] . '=' . urlencode(utf8_encode( ehive_get_var($options['query_var']) )) .$all.'&view='.$view.'&%_%';
+						  //$pBase = ehive_link2('Search') . '?' . $options['query_var'] . '=' . urlencode(utf8_encode( ehive_get_var($options['query_var']) )) .$all.'&view='.$view.'&%_%';
+							$pBase = ehive_link2('Search') . '?' . $options['query_var'] . '=' .rawurlencode(utf8_encode($query)).$all.'&view='.$view.'&%_%';
+							
 							$pFormat = $options['page_var'] . '=%#%';
 							$pTotal = ceil($objectRecordsCollection->totalObjects / $options['limit']);
 							$pCurrent = ehive_get_var($options['page_var'], 1);
+							
 							echo paginate_links( array('base' => $pBase, 'format' => $pFormat, 'total' => $pTotal, 'current' => $pCurrent) );
 						} 	
 						

@@ -4,7 +4,7 @@
 	Plugin URI: http://developers.ehive.com/wordpress-plugins/
 	Author: Vernon Systems limited
 	Description: Search and display results from eHive. The <a href="http://developers.ehive.com/wordpress-plugins#ehiveaccess" target="_blank">eHiveAccess plugin</a> must be installed.
-	Version: 2.1.3
+	Version: 2.1.4
 	Author URI: http://vernonsystems.com
 	License: GPL2+
 */
@@ -28,6 +28,9 @@
 if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins', array()))) {
 
     class eHiveSearch {
+    	
+    	const CURRENT_VERSION = 1; // Increment each time an upgrade is required / options added or deleted.
+    	const EHIVE_SEARCH_OPTIONS = "ehive_search_options";    	 
 
         function __construct() {
                         
@@ -38,10 +41,9 @@ if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins'
             add_shortcode('ehive_search', array(&$this, 'ehive_search_shortcode'));
         }
         
-        /*
-         * Admin init
-         */
         function ehive_search_admin_options_init(){
+        	
+        	$this->ehive_plugin_update();
         	 
         	wp_register_style($handle = 'eHiveAdminCSS', $src = plugins_url('eHiveAdmin.css', '/ehive-access/css/eHiveAdmin.css'));
         	
@@ -73,24 +75,15 @@ if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins'
         	 
         }
         
-        /*
-         * Add admin stylesheet
-         */
         function ehive_search_admin_enqueue_styles() {
         	wp_enqueue_style('eHiveAdminCSS');
         }
         
-        /*
-         * Validation
-         */
         function ehive_search_options_validate($input) {
         	add_settings_error('ehive_search_options', 'updated', 'eHive Search settings saved.', 'updated');
         	return $input;
         }
         
-        /*
-         * Options page content
-         */
         function comment_section_text_fn() {
         	echo "<p><em>An overview of the plugin and shortcode documentation is available in the help.</em></p>";
         }
@@ -190,25 +183,11 @@ if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins'
         	add_settings_field('image_padding', 'Image padding', array(&$this, 'image_padding_fn'), __FILE__, 'css_inline_section');
         	add_settings_field('image_border_colour', 'Image border colour', array(&$this, 'image_border_colour_fn'), __FILE__, 'css_inline_section');
         	add_settings_field('image_border_width', 'Image border width', array(&$this, 'image_border_width_fn'), __FILE__, 'css_inline_section');
-        	
-        	$options = get_option('ehive_search_options');
-        	$listViewEnabled = false;
-        	if(isset($options['results_view_list_enabled']) && $options['results_view_list_enabled'] == 'on') {
-        		echo "<div class='ehive-options-demo-image list-view'><img src='/wp-content/plugins/ehive-search/images/search_item_list.png' /></div>";
-        		$listViewEnabled = true;
-        	}
-        	
-        	if (isset($options['results_view_lightbox_enabled']) && $options['results_view_lightbox_enabled'] == 'on') {
-        		if ($listViewEnabled) {
-        			$bothEnabledCssClass = 'both-ehive-views-enabled';
-        		}
-        		echo "<div class='ehive-options-demo-image lightbox-view $bothEnabledCssClass'><img src='/wp-content/plugins/ehive-search/images/search_item_lightbox.png' /></div>";
-        	}
         }
         
-        /***************************
-         * GENERAL OPTIONS SECTION *
-         ***************************/
+        //
+        //	GENERAL OPTIONS SECTION
+        //
         function limit_fn() {
         	$options = get_option('ehive_search_options');
         	echo "<input class='small-text' id='limit' name='ehive_search_options[limit]' type='number' value='{$options['limit']}' />";
@@ -231,9 +210,9 @@ if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins'
         	echo '<p>Use the "Hide search form" option in conjunction with an eHive plugin or widget that instigates a search.<br />(eHive Search widget, eHive Objects Tag Cloud widget or plugin, eHive Objects Gallery Widget)';
         }
         
-        /************************
-         * RESULTS VIEW SECTION *
-         ************************/
+        //
+        //	RESULTS VIEW SECTION
+        //
         function result_views_options_fn($keyValuePair) {
         	$options = get_option('ehive_search_options');
         
@@ -260,9 +239,9 @@ if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins'
         	echo "<input ".$checked." id='show_powered_by_ehive' name='ehive_search_options[show_powered_by_ehive]' type='checkbox' />";
         }
         
-        /*********************
-         * LIST VIEW SECTION *
-         *********************/
+        //
+        //	LIST VIEW SECTION
+        //
         function list_view_options_fn($key) {
         	$options = get_option('ehive_search_options');
         	if($options[$key]) {
@@ -271,9 +250,9 @@ if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins'
         	echo "<input ".$checked." id='{$key}' name='ehive_search_options[{$key}]' type='checkbox' />";
         }
         
-        /*************************
-         * LIGHTBOX VIEW SECTION *
-         *************************/
+        //
+        //	LIGHTBOX VIEW SECTION
+        //
         function lightbox_columns_fn() {
         	$options = get_option('ehive_search_options');
         	echo "<input class='small-text' id='lightbox_columns' name='ehive_search_options[lightbox_columns]' type='number' value='{$options['lightbox_columns']}' />";
@@ -299,9 +278,9 @@ if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins'
         	echo "<td><input ".$checked." id='{$key}' name='ehive_search_options[{$key}]' type='checkbox' /></td>";
         }
         	
-        /****************************
-         * ADVANCED OPTIONS SECTION *
-         ****************************/
+        //
+        //	ADVANCED OPTIONS SECTION
+        //
         function query_var_fn() {
         	$options = get_option('ehive_search_options');
         	echo "<input class='medium-text' id='query_var' name='ehive_search_options[query_var]' type='text' value='{$options['query_var']}' />";
@@ -312,9 +291,9 @@ if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins'
         	echo "<input class='medium-text' id='page_var' name='ehive_search_options[page_var]' type='text' value='{$options['page_var']}' />";
 		}
         
-		/***********************
-		 * CSS OPTIONS SECTION *
-		 ***********************/
+		//
+		//	CSS OPTIONS SECTION
+		//
 		function css_class_fn() {
 			$options = get_option('ehive_search_options');
 			echo "<input class='medium-text' id='css_class' name='ehive_search_options[css_class]' type='text' value='{$options['css_class']}' />";
@@ -329,9 +308,9 @@ if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins'
 			echo "<input {$checked} id='plugin_css_enabled' name='ehive_search_options[plugin_css_enabled]' type='checkbox' />";
 		}
 		
-		/******************************
-		 * INLINE CSS OPTIONS SECTION *
-		 ******************************/
+		//
+		//	INLINE CSS OPTIONS SECTION
+		//
 		function item_background_colour_fn() {
 			$options = get_option('ehive_search_options');
 			if(isset($options['item_background_colour_enabled']) && $options['item_background_colour_enabled'] == 'on') {
@@ -340,6 +319,22 @@ if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins'
 			echo "<input class='medium-text' id='item_background_colour' name='ehive_search_options[item_background_colour]' type='text' value='{$options['item_background_colour']}' />";
 			echo '<div id="item_background_colourpicker"></div>';
 			echo "<td><input ".$checked." id='item_background_colour_enabled' name='ehive_search_options[item_background_colour_enabled]' type='checkbox' /></td>";
+			
+			
+			$options = get_option('ehive_search_options');
+			$listViewEnabled = false;
+			if(isset($options['results_view_list_enabled']) && $options['results_view_list_enabled'] == 'on') {
+				echo "<td rowspan='12'><img src='/wp-content/plugins/ehive-search/images/search_item_list.png' /></td>";
+				$listViewEnabled = true;
+			}
+			 
+			if (isset($options['results_view_lightbox_enabled']) && $options['results_view_lightbox_enabled'] == 'on') {
+				if ($listViewEnabled) {
+					$bothEnabledCssClass = 'both-ehive-views-enabled';
+				}
+				echo "<td rowspan='12'><img src='/wp-content/plugins/ehive-search/images/search_item_lightbox.png' /></td>";
+			}						
+			
 		}
 		
         function item_border_colour_fn() {
@@ -397,9 +392,6 @@ if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins'
         	echo "<input class='small-text' id='image_border_width' name='ehive_search_options[image_border_width]' type='number' value='{$options['image_border_width']}' />";
 		}
 		
-		/*
-		 * Admin menu setup
-		 */
         function ehive_search_admin_menu() {
         	 
         	global $ehive_search_options_page;
@@ -413,18 +405,12 @@ if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins'
         	add_action("load-$ehive_search_options_page",array(&$this, "ehive_search_options_help"));
         }
         
-        /*
-         * Admin menu link
-         */
         function ehive_search_plugin_action_links($links, $file) {
         	$settings_link = '<a href="admin.php?page=ehive_search">' . __('Settings') . '</a>';
         	array_unshift($links, $settings_link); // before other links
         	return $links;
         }
                 
-        /*
-         * Add plugin stylesheet
-         */
         public function enqueue_styles() {
         	$options = get_option('ehive_search_options');
         
@@ -434,9 +420,6 @@ if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins'
         	}
         }
         
-        /*
-         * Plugin options help setup
-         */
         function ehive_search_options_help() {
         	global $ehive_search_options_page;
         
@@ -469,9 +452,6 @@ if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins'
         	$screen->set_help_sidebar('<p><strong>For more information:</strong></p><p><a href="http://developers.ehive.com/wordpress-plugins#ehivesearch" target="_blank">Documentation for eHive plugins</a></p>');
         }
         
-        /*
-         * Options page setup
-        */
         function ehive_search_options_page() {
         	?>
            	<div class="wrap">
@@ -493,9 +473,6 @@ if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins'
         	return get_option('ehive_search_options');
         }
         
-        /*
-         * Shortcode setup
-         */
         public function ehive_search_shortcode($atts) {
         	global $eHiveAccess;
         	
@@ -523,7 +500,12 @@ if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins'
         	$poweredByEhiveEnabled = $options['show_powered_by_ehive'] == 'on' ? true : false;
         	
         	$queryAll = ehive_get_var('all', false);
-        	$query = ehive_get_var($options['query_var'], false);
+        	        	
+        	$query = ehive_get_var( $options['query_var'], false);
+        	
+        	$query = rawurldecode($query);        	
+        	$query = stripslashes_deep( $query );        	
+        	        	
             $page = ehive_get_var($options['page_var'], 1) - 1;
             $offset = $page * $options['limit'];
             
@@ -615,86 +597,109 @@ if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins'
             return $rules;            
         }
         
-        /*
-         * On plugin activate 
-         */
+        //
+        //	Setup the plugin options, handle upgrades to the plugin.
+        //
+        function ehive_plugin_update() {
+        	
+        	// Add the default options.
+        	if ( get_option(self::EHIVE_SEARCH_OPTIONS) === false ) {
+
+				$options = array("update_version"=>self::CURRENT_VERSION,
+								 "plugin_css_enabled"=>"on",
+								 "css_class"=>"",
+								 "item_background_colour"=>"#f3f3f3",
+								 "item_background_colour_enabled"=>'on',
+								 "item_border_colour"=>"#666666",
+						 		 "item_border_colour_enabled"=>'',
+								 "item_border_width"=>"2",
+								 "image_background_colour"=>"#ffffff",
+								 "image_background_colour_enabled"=>'on',
+								 "image_padding"=>"1",
+								 "image_padding_enabled"=>"on",
+								 "image_border_colour"=>"#666666",
+								 "image_border_colour_enabled"=>'on',
+								 "image_border_width"=>"2",
+								 "limit"=>12,
+								 "hide_search_form_enabled"=>'',
+								 "view"=>"summary",
+								 "query_var"=>"eHive_query",
+								 "page_var"=>"eHive_page",
+								 "results_view_default"=>"list",
+								 "results_view_list_enabled"=>'on',
+								 "results_view_lightbox_enabled"=>'',
+								 'list_object_number_enabled' => 'on',
+								 'list_name_enabled' => 'on',
+								 'list_primary_creator_maker_enabled' => '',
+								 'list_primary_creator_maker_role_enabled' => '',
+								 'list_taxonomic_classification_enabled' => '',
+								 'list_taxonomic_type_indicator_enabled' => '',
+								 'list_field_collector_enabled' => '',
+								 'list_web_public_description_enabled' => '',
+								 'list_date_made_enabled' => '',
+								 'list_place_made_enabled' => '',
+								 'list_object_type_enabled' => '',
+								 'list_medium_description_enabled' => '',
+								 'list_measurement_description_enabled' => '',
+								 'list_named_collection_enabled' => '',
+								 'list_credit_line_enabled' => '',
+								 'show_public_profile_name' => 'on',
+								 "show_powered_by_ehive"=>'on',
+								 "lightbox_date_made_enabled"=>'on',
+								 "lightbox_field_collection_description_enabled"=>'on',
+								 "lightbox_isbn_issn_enabled"=>'on',
+								 "lightbox_name_enabled"=>'on',
+								 "lightbox_object_number_enabled"=>'on',
+								 "lightbox_place_made_enabled"=>'on',
+								 "lightbox_primary_creator_maker_enabled"=>'on',
+								 "lightbox_specimen_category_enabled"=>'on',
+								 "lightbox_taxonomic_classification_enabled"=>'on',
+								 "lightbox_taxonomic_type_indicator_enabled"=>'on',
+								 "lightbox_date_made_label"=>"Date made:",
+								 "lightbox_field_collection_description_label"=>"Collection description:",
+								 "lightbox_isbn_issn_label"=>"ISBN ISSN:",
+								 "lightbox_name_label"=>"Name:",
+								 "lightbox_object_number_label"=>"Object number:",
+								 "lightbox_place_made_label"=>"Place made:",
+								 "lightbox_primary_creator_maker_label"=>"Primary creator maker:",
+								 "lightbox_specimen_category_label"=>"Specimen category:",
+								 "lightbox_taxonomic_classification_label"=>"Taxonomic classification:",
+								 "lightbox_taxonomic_type_indicator_label"=>"Taxonomic type indicator:",
+								 "lightbox_columns" => 3,
+								 "lightbox_more_link_enabled" => 'on',
+								 "lightbox_more_link_text" => "more..." );
+				 
+				update_option(self::EHIVE_SEARCH_OPTIONS, $options);
+        		 
+			} else {
+
+				$options = get_option(self::EHIVE_SEARCH_OPTIONS);
+				
+				if ( array_key_exists("update_version", $options)) {
+					$updateVersion = $options["update_version"];
+				} else {
+					$updateVersion = 0;
+				}
+				
+				if ( $updateVersion == self::CURRENT_VERSION ) {
+					// Nothing to do.
+				}  else {
+				
+					if ( $updateVersion == 0 ) {							
+						$updateVersion = 1;
+					}
+						
+					// End of the update chain, save the options to the database.
+					$options["update_version"] = self::CURRENT_VERSION;
+					update_option(self::EHIVE_SEARCH_OPTIONS, $options);
+				}
+			}        	
+        }
+                
         public function activate() {
-        	$arr = array(
-        			"plugin_css_enabled"=>"on",
-					"css_class"=>"",
-					"item_background_colour"=>"#f3f3f3",
-					"item_background_colour_enabled"=>'on',
-					"item_border_colour"=>"#666666",
-					"item_border_colour_enabled"=>'',
-					"item_border_width"=>"2",
-					"image_background_colour"=>"#ffffff",
-					"image_background_colour_enabled"=>'on',
-					"image_padding"=>"1",
-					"image_padding_enabled"=>"on",
-					"image_border_colour"=>"#666666",
-					"image_border_colour_enabled"=>'on',
-					"image_border_width"=>"2",
-      				"limit"=>12,
-					"hide_search_form_enabled"=>'',
-       				"view"=>"summary",
-       				"query_var"=>"eHive_query",
-       				"page_var"=>"eHive_page",
-        			"results_view_default"=>"list",
-        			"results_view_list_enabled"=>'on',
-        			"results_view_lightbox_enabled"=>'',        			
-        			'list_object_number_enabled' => 'on',
-        			'list_name_enabled' => 'on',
-        			'list_primary_creator_maker_enabled' => '',
-        			'list_primary_creator_maker_role_enabled' => '',
-        			'list_taxonomic_classification_enabled' => '',
-        			'list_taxonomic_type_indicator_enabled' => '',
-        			'list_field_collector_enabled' => '',
-        			'list_web_public_description_enabled' => '',
-        			'list_date_made_enabled' => '',
-        			'list_place_made_enabled' => '',
-        			'list_object_type_enabled' => '',
-        			'list_medium_description_enabled' => '',
-        			'list_measurement_description_enabled' => '',
-        			'list_named_collection_enabled' => '',
-        			'list_credit_line_enabled' => '',
-					'show_public_profile_name' => 'on',
-        			"show_powered_by_ehive"=>'on',
-        			"lightbox_date_made_enabled"=>'on',
-        			"lightbox_field_collection_description_enabled"=>'on',
-        			"lightbox_isbn_issn_enabled"=>'on',
-        			"lightbox_name_enabled"=>'on',
-        			"lightbox_object_number_enabled"=>'on',
-        			"lightbox_place_made_enabled"=>'on',
-        			"lightbox_primary_creator_maker_enabled"=>'on',
-        			"lightbox_specimen_category_enabled"=>'on',
-        			"lightbox_taxonomic_classification_enabled"=>'on',
-        			"lightbox_taxonomic_type_indicator_enabled"=>'on',
-        			"lightbox_date_made_label"=>"Date made:",
-        			"lightbox_field_collection_description_label"=>"Collection description:",
-        			"lightbox_isbn_issn_label"=>"ISBN ISSN:",
-        			"lightbox_name_label"=>"Name:",
-        			"lightbox_object_number_label"=>"Object number:",
-        			"lightbox_place_made_label"=>"Place made:",
-        			"lightbox_primary_creator_maker_label"=>"Primary creator maker:",
-        			"lightbox_specimen_category_label"=>"Specimen category:",
-        			"lightbox_taxonomic_classification_label"=>"Taxonomic classification:",
-        			"lightbox_taxonomic_type_indicator_label"=>"Taxonomic type indicator:",
-					"lightbox_columns" => 3,
-					"lightbox_more_link_enabled" => 'on',
-					"lightbox_more_link_text" => "more..." );
-        	
-        	update_option('ehive_search_options', $arr);
-        	 
-        	
-            global $wp_rewrite;
-            $wp_rewrite->flush_rules();        
         }
 
-        /*
-         * On plugin deactivate
-         */
         public function deactivate() {
-        	delete_option('ehive_search_options');
         }
     }
 
