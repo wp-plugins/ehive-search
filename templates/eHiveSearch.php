@@ -25,7 +25,6 @@ if ($css_class == "") {
 if ($options['hide_search_form_enabled'] != 'on') {
 	echo '<form class="ehive-search" name="ehive-search-form" action="'. $eHiveAccess->getSearchPageLink() .'" method="get">';
 		
-		//echo '<input class="ehive-query" type="text" name="'. $options['query_var'] .'" value="'. stripslashes_deep(ehive_get_var($options['query_var'])).'"/>';		
 		echo "<input class='ehive-query' type='text' name='". $options['query_var'] ."' value='".$query."'/>";
 		
 		echo '<input class="ehive-submit" type="submit" value="Search"/>';
@@ -53,7 +52,6 @@ if (!isset($eHiveApiErrorMessage)) {
 						} else {		
 							$all = ($queryAll==true) ? '&all=true' : '';
 									
-						  //$pBase = ehive_link2('Search') . '?' . $options['query_var'] . '=' . urlencode(utf8_encode( ehive_get_var($options['query_var']) )) .$all.'&view='.$view.'&%_%';
 							$pBase = ehive_link2('Search') . '?' . $options['query_var'] . '=' .rawurlencode(utf8_encode($query)).$all.'&view='.$view.'&%_%';
 							
 							$pFormat = $options['page_var'] . '=%#%';
@@ -127,7 +125,7 @@ if (!isset($eHiveApiErrorMessage)) {
 							echo '<div class="ehive-item-image-wrap">';
 								echo '<a class="ehive-image-link" href="'.$eHiveAccess->getObjectDetailsPageLink($objectRecord->objectRecordId).'">';
 								
-									$imageLink = '<img class="ehive-image" src="/wp-content/plugins/ehive-search/images/no_image_ts.png" alt="'.$objectRecord->name.'" title="'.$objectRecord->name.'" >';
+									$imageLink = '<img class="ehive-image" src="'.EHIVE_SEARCH_PLUGIN_DIR.'images/no_image_ts.png" alt="'.$objectRecord->name.'" title="'.$objectRecord->name.'" >';
 									
 									$imageMediaSet = $objectRecord->getMediaSetByIdentifier('image');
 									if (isset($imageMediaSet)) {
@@ -152,7 +150,7 @@ if (!isset($eHiveApiErrorMessage)) {
 				echo '</div>';
 			
 			if ( $poweredByEhiveEnabled ) {
-				echo '<a href="http://ehive.com/what-is-ehive" target="_blank"><img class="ehive-logo-powered-by" src="/wp-content/plugins/ehive-search/images/powered_by_ehive_small.png" alt="Powered by eHive" title="Powered by eHive" width="103" height="35"></a>';
+				echo '<a href="http://ehive.com/what-is-ehive" target="_blank"><img class="ehive-logo-powered-by" src="'.EHIVE_SEARCH_PLUGIN_DIR.'images/powered_by_ehive_small.png" alt="Powered by eHive" title="Powered by eHive" width="103" height="35"></a>';				
 			}
 			echo '</div>';
 								
@@ -350,5 +348,4 @@ function listFields($options, $objectRecord) {
 	}
 	return $summary;
 }
-
 ?>

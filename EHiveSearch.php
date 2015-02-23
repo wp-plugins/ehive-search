@@ -4,7 +4,7 @@
 	Plugin URI: http://developers.ehive.com/wordpress-plugins/
 	Author: Vernon Systems limited
 	Description: Search and display results from eHive. The <a href="http://developers.ehive.com/wordpress-plugins#ehiveaccess" target="_blank">eHiveAccess plugin</a> must be installed.
-	Version: 2.1.4
+	Version: 2.1.5
 	Author URI: http://vernonsystems.com
 	License: GPL2+
 */
@@ -26,11 +26,13 @@
 	Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins', array()))) {
-
+	
+	define('EHIVE_SEARCH_PLUGIN_DIR', plugin_dir_url( __FILE__ ));
+	
     class eHiveSearch {
     	
     	const CURRENT_VERSION = 1; // Increment each time an upgrade is required / options added or deleted.
-    	const EHIVE_SEARCH_OPTIONS = "ehive_search_options";    	 
+    	const EHIVE_SEARCH_OPTIONS = "ehive_search_options";   
 
         function __construct() {
                         
@@ -324,7 +326,7 @@ if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins'
 			$options = get_option('ehive_search_options');
 			$listViewEnabled = false;
 			if(isset($options['results_view_list_enabled']) && $options['results_view_list_enabled'] == 'on') {
-				echo "<td rowspan='12'><img src='/wp-content/plugins/ehive-search/images/search_item_list.png' /></td>";
+				echo '<td rowspan="12"><img src="'.EHIVE_SEARCH_PLUGIN_DIR.'/images/search_item_list.png" /></td>';
 				$listViewEnabled = true;
 			}
 			 
@@ -332,7 +334,7 @@ if (in_array('ehive-access/EHiveAccess.php', (array) get_option('active_plugins'
 				if ($listViewEnabled) {
 					$bothEnabledCssClass = 'both-ehive-views-enabled';
 				}
-				echo "<td rowspan='12'><img src='/wp-content/plugins/ehive-search/images/search_item_lightbox.png' /></td>";
+				echo '<td rowspan="12"><img src="'.EHIVE_SEARCH_PLUGIN_DIR.'images/search_item_lightbox.png" /></td>';
 			}						
 			
 		}
